@@ -4,11 +4,7 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 
-const con = require("./src/config/connection");
-app.use(function (req, res, next) {
-  req.con = con;
-  next();
-});
+const connectDatabase = require("./src/middleware/db");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -16,6 +12,8 @@ app.use(bodyParser.json());
 app.listen(PORT, function () {
   console.log(`server ok PORT ${PORT}`);
 });
+
+app.use(connectDatabase);
 
 const testRoute = require("./src/router/test");
 app.use(testRoute);
